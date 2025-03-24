@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Contracts\Actions\User\GetUserActionContract;
+use App\Contracts\Actions\User\GetUsersActionContract;
 use App\Contracts\Actions\User\UserStoreActionContract;
 use App\Facades\ApiResponse;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\GetUserRequest;
+use App\Http\Requests\Api\GetUsersRequest;
 use App\Http\Requests\Api\UserStoreRequest;
 use Illuminate\Http\JsonResponse;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
@@ -14,13 +16,13 @@ use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 class UserController extends Controller
 {
     /**
-     * @param GetUserRequest $request
-     * @param GetUserActionContract $action
+     * @param GetUsersRequest $request
+     * @param GetUsersActionContract $action
      * @return mixed
      * @throws UnknownProperties
      */
 
-    public function index(GetUserRequest $request, GetUserActionContract $action): JsonResponse
+    public function index(GetUsersRequest $request, GetUsersActionContract $action): JsonResponse
     {
         return ApiResponse::success(
             __('user/user.response.200.index'),
@@ -37,8 +39,24 @@ class UserController extends Controller
     public function store(UserStoreRequest $request, UserStoreActionContract $action): JsonResponse
     {
         return ApiResponse::success(
-            __('user/user.response.200.create'),
+            __('user/user.response.200.store'),
             $action($request->toDTO()),
         );
     }
+
+    /**
+     * @param GetUserRequest $request
+     * @param GetUserActionContract $action
+     * @return mixed
+     * @throws UnknownProperties
+     */
+
+    public function show(GetUserRequest $request, GetUserActionContract $action): JsonResponse
+    {
+        return ApiResponse::success(
+            __('user/user.response.200.show'),
+            $action($request->toDTO()),
+        );
+    }
+
 }

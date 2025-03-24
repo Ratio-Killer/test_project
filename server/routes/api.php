@@ -9,6 +9,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('/users', UserController::class)->only(['index', 'store']);
+Route::apiResource('/users', UserController::class)->only(['index', 'store', 'show']);
 Route::apiResource('/positions', PositionController::class)->only(['index']);
 

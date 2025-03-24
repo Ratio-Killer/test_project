@@ -2,14 +2,15 @@
 
 namespace App\Services;
 
-use App\DataTransferObjects\User\GetUserDTO;
+use App\DataTransferObjects\User\GetUsersDTO;
 use App\DataTransferObjects\User\UserStoreDTO;
 use App\Facades\HttpRequest;
-use Illuminate\Support\Facades\Http;
+use App\Traits\Image\ImageTrait;
 use App\Contracts\Services\AbzApiServiceContract;
 
 class AbzApiService implements AbzApiServiceContract
 {
+    use ImageTrait;
 
     /**
      * @var string
@@ -33,7 +34,7 @@ class AbzApiService implements AbzApiServiceContract
         $this->url = $url;
         $this->routes = $routes;
         $this->headers = [
-            'Content-Type' => 'application/json',
+//            'Content-Type' => 'application/json',
             'Token' => $this->token ?? null
         ];
     }
@@ -43,11 +44,10 @@ class AbzApiService implements AbzApiServiceContract
      */
     public function requestToken(): string|null
     {
-        $response = HttpRequest::setHeaders($this->headers)
+        $response = HttpRequest::setHeaders(['Content-Type' => 'application/json'])
             ->get($this->url . $this->routes['token']);
-
         if ($response['status']) {
-            return $this->headers['Token'] = $response['body']['token'];
+            return $this->token = $this->headers['Token'] = $response['body']['token'];
         }
         return null;
     }
@@ -60,18 +60,17 @@ class AbzApiService implements AbzApiServiceContract
     public function setUsers(UserStoreDTO $data): array|null
     {
         $this->requestToken();
-        $this->headers['Content-Type'] = 'multipart/form-data';
+        $data->photo = $this->processImage($data->photo);
         $response = HttpRequest::setHeaders($this->headers)
             ->post($this->url . $this->routes['users'], $data->toArray());
-        dd($this->url . $this->routes['users'], $this->token,$response, $this->headers ,$data->toArray());
-        return $response['status'] ? $response['body'] : null;
+        return $response['status'] ? $response['body'] : [$response];
     }
 
     /**
-     * @param GetUserDTO $data
+     * @param GetUsersDTO $data
      * @return array|null
      */
-    public function getUsers(GetUserDTO $data): array|null
+    public function getUsers(GetUsersDTO $data): array|null
     {
         $this->requestToken();
         $response = HttpRequest::setHeaders($this->headers)
@@ -79,9 +78,16 @@ class AbzApiService implements AbzApiServiceContract
         return $response['status'] ? $response['body'] : null;
     }
 
-    public function getUserById(int $id): array
+    /**
+     * @param int $id
+     * @return array|null
+     */
+    public function getUserById(int $id): array|null
     {
-        return [];
+        $this->requestToken();
+        $response = HttpRequest::setHeaders($this->headers)
+            ->get($this->url . $this->routes['users'] . '/' . $id);
+        return $response['status'] ? $response['body'] : null;
     }
 
     /**

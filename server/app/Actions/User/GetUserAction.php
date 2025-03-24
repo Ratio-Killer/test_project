@@ -27,6 +27,6 @@ class GetUserAction implements GetUserActionContract
      */
     public function __invoke(GetUserDTO $data): array
     {
-        return $this->api_service->getUsers($data);
+        return $this->api_service->getUserById($data->id);
     }
 }

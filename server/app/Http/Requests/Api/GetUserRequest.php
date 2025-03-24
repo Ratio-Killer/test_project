@@ -26,6 +26,17 @@ class GetUserRequest extends FormRequest
             )
         );
     }
+
+    /**
+     * @return void
+     */
+    protected function prepareForValidation():void
+    {
+        $this->merge([
+            'user' => $this->route('user'),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -34,12 +45,7 @@ class GetUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page' => [
-                'int',
-            ],
-            'count' => [
-                'int',
-            ],
+            'user' => ['required', 'integer'],
         ];
     }
 
@@ -50,8 +56,7 @@ class GetUserRequest extends FormRequest
     public function toDTO(): GetUserDTO
     {
         return new GetUserDTO(
-            page: $this->collect()->get('page'),
-            count: $this->collect()->get('count'),
+            id: (int) $this->route('user')
         );
     }
 }

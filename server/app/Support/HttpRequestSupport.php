@@ -3,7 +3,9 @@
 namespace App\Support;
 
 use Exception;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class HttpRequestSupport
 {
@@ -49,27 +51,34 @@ class HttpRequestSupport
         try {
             $request = Http::withHeaders($this->headers);
 
-            if (array_key_exists('body', $parameters)) {
-                $request = $request->withBody($parameters['body']);
-                unset($parameters['body']);
+            if (strtoupper($method) === 'GET') {
+                $response = $request->get($url, $parameters);
+            } else {
+                $request = $request->asMultipart();
+                $multipartData = [];
+
+                foreach ($parameters as $key => $value) {
+                    if ($key !== 'photo') {
+                        $multipartData[$key] = is_array($value) ? json_encode($value) : $value;
+                    }
+                }
+
+                if (!empty($parameters['photo']) && $parameters['photo'] instanceof UploadedFile) {
+                    $photo = $parameters['photo'];
+                    $request = $request->attach(
+                        'photo',
+                        file_get_contents($photo->getRealPath()),
+                        $photo->getClientOriginalName(),
+                        ['Content-Type' => $photo->getMimeType()]
+                    );
+                }
+
+                $response = $request->post($url, $multipartData);
             }
 
-            if (array_key_exists('form_params', $parameters)) {
-                $request = $request->asForm();
-                $parameters = $parameters['form_params'];
-                unset($parameters['form_params']);
-            }
-
-            if (array_key_exists('attach', $parameters)) {
-                $attach_data = $parameters['attach']['file'];
-                $request = $request->attach($attach_data['name'], $attach_data['contents'], $attach_data['filename']);
-                $parameters = $parameters['attach']['parameters'] ?? [];
-                unset($parameters['attach']);
-            }
-
-            $response = $request->$method($url, $parameters);
             return $this->getBody($response);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            Log::error('handleRequest Error: ' . $e->getMessage());
             return [];
         }
     }

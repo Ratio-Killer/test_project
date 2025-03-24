@@ -9,13 +9,9 @@ use Spatie\DataTransferObject\DataTransferObject;
 class GetUserDTO extends DataTransferObject
 {
     /**
-     * @var int|null
+     * @var int
      */
-    public int|null $page;
+    public int $id;
 
-    /**
-     * @var int|null
-     */
-    public int|null $count;
 
 }
