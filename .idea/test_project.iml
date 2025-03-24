@@ -117,9 +117,6 @@
       <excludeFolder url="file://$MODULE_DIR$/server/vendor/spatie/data-transfer-object" />
       <excludeFolder url="file://$MODULE_DIR$/server/vendor/intervention/gif" />
       <excludeFolder url="file://$MODULE_DIR$/server/vendor/intervention/image" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/intervention/gif" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/intervention/image" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

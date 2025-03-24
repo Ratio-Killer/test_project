@@ -17,9 +17,6 @@
   </component>
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="$PROJECT_DIR$/vendor/composer" />
-      <path value="$PROJECT_DIR$/vendor/intervention/image" />
-      <path value="$PROJECT_DIR$/vendor/intervention/gif" />
       <path value="$PROJECT_DIR$/server/vendor/ramsey/uuid" />
       <path value="$PROJECT_DIR$/server/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/server/vendor/staabm/side-effects-detector" />
