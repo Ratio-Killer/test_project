@@ -55,50 +55,51 @@ class AbzApiService implements AbzApiServiceContract
 
     /**
      * @param UserStoreDTO $data
-     * @return array|null
+     * @return array
      */
-    public function setUsers(UserStoreDTO $data): array|null
+    public function setUsers(UserStoreDTO $data): array
     {
         $this->requestToken();
         $data->photo = $this->processImage($data->photo);
         $response = HttpRequest::setHeaders($this->headers)
             ->post($this->url . $this->routes['users'], $data->toArray());
-        return $response['status'] ? $response['body'] : [$response];
+        dump($response);
+        return $response['status'] ? $response['body'] : ['status' => false];
     }
 
     /**
      * @param GetUsersDTO $data
-     * @return array|null
+     * @return array
      */
-    public function getUsers(GetUsersDTO $data): array|null
+    public function getUsers(GetUsersDTO $data): array
     {
         $this->requestToken();
         $response = HttpRequest::setHeaders($this->headers)
             ->get($this->url . $this->routes['users'], $data->toArray());
-        return $response['status'] ? $response['body'] : null;
+        return $response['status'] ? $response['body'] : ['status' => false];
     }
 
     /**
      * @param int $id
-     * @return array|null
+     * @return array
      */
-    public function getUserById(int $id): array|null
+    public function getUserById(int $id): array
     {
         $this->requestToken();
         $response = HttpRequest::setHeaders($this->headers)
             ->get($this->url . $this->routes['users'] . '/' . $id);
-        return $response['status'] ? $response['body'] : null;
+        return $response['status'] ? $response['body'] : ['status' => false];
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function getPositions(): array|null
+    public function getPositions(): array
     {
         $this->requestToken();
         $response = HttpRequest::setHeaders($this->headers)
             ->get($this->url . $this->routes['positions']);
-        return $response['status'] ? $response['body'] : null;
+        return $response['status'] ? $response['body'] : ['status' => false];
     }
 
 }
