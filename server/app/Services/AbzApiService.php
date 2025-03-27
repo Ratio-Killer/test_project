@@ -34,7 +34,6 @@ class AbzApiService implements AbzApiServiceContract
         $this->url = $url;
         $this->routes = $routes;
         $this->headers = [
-//            'Content-Type' => 'application/json',
             'Token' => $this->token ?? null
         ];
     }
