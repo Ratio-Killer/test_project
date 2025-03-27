@@ -26,6 +26,6 @@ class UserStoreAction implements UserStoreActionContract
      */
     public function __invoke(UserStoreDTO $data): array
     {
-        return $this->api_service->setUsers($data);
+        return $this->api_service->setUser($data);
     }
 }

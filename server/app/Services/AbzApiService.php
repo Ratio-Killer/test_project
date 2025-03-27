@@ -57,13 +57,12 @@ class AbzApiService implements AbzApiServiceContract
      * @param UserStoreDTO $data
      * @return array
      */
-    public function setUsers(UserStoreDTO $data): array
+    public function setUser(UserStoreDTO $data): array
     {
         $this->requestToken();
         $data->photo = $this->processImage($data->photo);
         $response = HttpRequest::setHeaders($this->headers)
             ->post($this->url . $this->routes['users'], $data->toArray());
-        dump($response);
         return $response['status'] ? $response['body'] : ['status' => false];
     }
 
