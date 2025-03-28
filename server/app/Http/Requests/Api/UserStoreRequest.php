@@ -47,7 +47,7 @@ class UserStoreRequest extends FormRequest
                 'required', 'integer'
             ],
             'photo' => [
-                'required',
+                'required', 'max:5120'
             ],
         ];
     }
