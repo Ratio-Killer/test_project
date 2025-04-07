@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\ApiPaginatorSupport;
 use App\Support\ApiResponseSupport;
 use App\Support\HttpRequestSupport;
 use App\Traits\Providers\ServiceProviderTrait;
@@ -16,6 +17,7 @@ class FacadeServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->bindSupport('ApiPaginator', ApiPaginatorSupport::class);
         $this->bindSupport('ApiResponse', ApiResponseSupport::class);
         $this->bindSupport('HttpRequest', HttpRequestSupport::class);
     }

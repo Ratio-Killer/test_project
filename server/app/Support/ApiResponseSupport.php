@@ -89,11 +89,11 @@ class ApiResponseSupport
     }
 
     /**
-     * @param string $file_path
+     * @param string $filePath
      * @return BinaryFileResponse|null
      */
-    public function getFile(string $file_path): BinaryFileResponse|null
+    public function getFile(string $filePath): BinaryFileResponse|null
     {
-        return response()->download($file_path);
+        return response()->download($filePath);
     }
 }

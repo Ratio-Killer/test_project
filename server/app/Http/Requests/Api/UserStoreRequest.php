@@ -35,10 +35,10 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 'string'
+                'required', 'string', 'min:2'
             ],
             'email' => [
-                'required', 'string'
+                'required', 'email:rfc'
             ],
             'phone' => [
                 'required', 'string'

@@ -2,22 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Contracts\Services\AbzApiServiceContract;
-use App\DataTransferObjects\User\UserStoreDTO;
+use App\Models\Position;
+use App\Traits\Image\ImageTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 class UserSeeder extends Seeder
 {
-    private AbzApiServiceContract $api_service;
-
-    public function __construct(AbzApiServiceContract $api_service)
-    {
-        $this->api_service = $api_service;
-    }
-
+use ImageTrait;
     /**
      * Run the database seeds.
      * @throws UnknownProperties
@@ -25,8 +21,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $seededUsers = [];
-        for ($i = 0; $i < 45; $i++) {
+        $positionIds = Position::pluck('id')->toArray();
+        $users = [];
+
+        for ($i = 0; $i < 15; $i++) {
             $gender = rand(0, 1) ? 'men' : 'women';
             $randomId = rand(1, 99);
             $avatarUrl = config('abz_api')['random_image_url'] . "/{$gender}/{$randomId}.jpg";
@@ -48,20 +46,21 @@ class UserSeeder extends Seeder
                 true
             );
 
-            $userData = new UserStoreDTO([
+            $processedPhoto = $this->processImage($photo);
+
+            $userData = [
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,
                 'phone' => '+380' . $faker->numerify('#########'),
-                'position_id' => rand(1, 4),
-                'photo' => $photo,
-            ]);
+                'position_id' => $faker->randomElement($positionIds),
+                'photo' => url("images/users/{$processedPhoto->getFilename()}"),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
 
-            $response = $this->api_service->setUser($userData);
-            if ($response['success']) {
-                $seededUsers[] = ['user_id' => $response['user_id']];
-            }
-
+            $users[] = $userData;
         }
-        print_r($seededUsers);
+
+        DB::table('users')->insert($users);
     }
 }

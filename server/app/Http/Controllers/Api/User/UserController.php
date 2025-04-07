@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Contracts\Actions\User\GetUserActionContract;
 use App\Contracts\Actions\User\GetUsersActionContract;
 use App\Contracts\Actions\User\UserStoreActionContract;
+use App\Exceptions\PageNotFoundException;
 use App\Facades\ApiResponse;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\GetUserRequest;
@@ -24,10 +25,14 @@ class UserController extends Controller
 
     public function index(GetUsersRequest $request, GetUsersActionContract $action): JsonResponse
     {
-        return ApiResponse::success(
-            __('user/user.response.200.index'),
-            $action($request->toDTO()),
-        );
+        try {
+            return ApiResponse::success(
+                __('user/user.response.200.index'),
+                $action($request->toDTO())
+            );
+        } catch (PageNotFoundException $e) {
+            return ApiResponse::notFound(__('user/user.response.404.page_not_found'));
+        }
     }
 
     /**

@@ -35,7 +35,7 @@ class GetUsersRequest extends FormRequest
     {
         return [
             'page' => [
-                'int',
+                'int','min:1'
             ],
             'count' => [
                 'int',

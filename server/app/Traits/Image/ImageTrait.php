@@ -11,14 +11,14 @@ trait  ImageTrait
 {
 
     /**
-     * @param UploadedFile $source_image
+     * @param UploadedFile $sourceImage
      * @return UploadedFile
      */
-    private function processImage(UploadedFile $source_image): UploadedFile
+    private function processImage(UploadedFile $sourceImage): UploadedFile
     {
-        $image = (new ImageManager(Driver::class))->read($source_image);
+        $image = (new ImageManager(Driver::class))->read($sourceImage);
         $image->coverDown(70, 70, 'center');
-        $directory = storage_path('app/public/images/');
+        $directory = public_path('images/users/');
 
         if (!File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);

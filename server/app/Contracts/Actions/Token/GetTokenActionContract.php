@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Contracts\Actions\Position;
+namespace App\Contracts\Actions\Token;
 
-interface GetPositionActionContract
+interface GetTokenActionContract
 {
+
     /**
      * @return array
      */

@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Actions\Position\GetPositionAction;
+use App\Actions\Token\GetTokenAction;
 use App\Actions\User\GetUserAction;
 use App\Actions\User\GetUsersAction;
 use App\Actions\User\UserStoreAction;
 use App\Contracts\Actions\Position\GetPositionActionContract;
+use App\Contracts\Actions\Token\GetTokenActionContract;
 use App\Contracts\Actions\User\GetUserActionContract;
 use App\Contracts\Actions\User\GetUsersActionContract;
 use App\Contracts\Actions\User\UserStoreActionContract;
@@ -27,6 +29,7 @@ class ActionServiceProvider extends ServiceProvider
             GetUsersActionContract::class => GetUsersAction::class,
             UserStoreActionContract::class => UserStoreAction::class,
             GetPositionActionContract::class => GetPositionAction::class,
+            GetTokenActionContract::class => GetTokenAction::class,
         ];
 
         foreach ($actions as $contract => $implementation) {
