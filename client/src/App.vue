@@ -107,6 +107,7 @@ export default {
       positions: [],
       loading: false,
       currentPage: 1,
+      token: '',
       nextPage: 1,
       count: 6,
       newUser: {
@@ -150,8 +151,8 @@ export default {
         const apiUrl = import.meta.env.VITE_API_URL;
         const response = await axios.get(`${apiUrl}/positions`);
 
-        if (response.data.data.positions.length > 0) {
-          this.positions.push(...response.data.data.positions);
+        if (response.data.data.length > 0) {
+          this.positions.push(...response.data.data);
         }
       } catch (error) {
         console.error('Error while loading positions', error);
@@ -160,15 +161,21 @@ export default {
       }
     },
     async getUser() {
-
       try {
         const apiUrl = import.meta.env.VITE_API_URL;
         const response = await axios.get(`${apiUrl}/users/${this.userId}`);
-        console.log(response)
-
-        this.user = response.data.data.user;
+        this.user = response.data.data;
       } catch (error) {
         console.error('Error while loading users', error);
+      }
+    },
+    async getToken() {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const response = await axios.get(`${apiUrl}/token`);
+        this.token = response.data.data.token;
+      } catch (error) {
+        console.error('Error while getting a token', error);
       }
     },
     async addUser() {
@@ -185,14 +192,19 @@ export default {
       const apiUrl = import.meta.env.VITE_API_URL;
 
       try {
-        const response = await axios.post(`${apiUrl}/users`, formData, {});
-        console.log(response)
+        await this.getToken();
+
+        const response = await axios.post(`${apiUrl}/users`, formData, {
+          headers: {
+            'Authorization': `Bearer ${this.token}`,
+          }
+        },);
 
         this.message = response.data.data.message;
         this.userId = response.data.data.user_id;
 
         this.resetForm();
-        this.getUser();
+        await this.getUser();
       } catch (error) {
         console.error('Error while adding user', error);
       }

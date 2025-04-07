@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\Token;
 
 use App\Contracts\Actions\Token\GetTokenActionContract;
 use App\Facades\ApiResponse;
@@ -15,7 +15,6 @@ class TokenController extends Controller
      * @return mixed
      * @throws UnknownProperties
      */
-
     public function index(GetTokenActionContract $action): JsonResponse
     {
         return ApiResponse::success(

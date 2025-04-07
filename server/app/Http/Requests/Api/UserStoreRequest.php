@@ -3,29 +3,12 @@
 namespace App\Http\Requests\Api;
 
 use App\DataTransferObjects\User\UserStoreDTO;
-use App\Facades\ApiResponse;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\BaseApiFormRequest;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
-class UserStoreRequest extends FormRequest
+class UserStoreRequest extends BaseApiFormRequest
 {
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param Validator $validator
-     * @return HttpResponseException
-     */
-    public function failedValidation(Validator $validator): HttpResponseException
-    {
-        throw new HttpResponseException(
-            ApiResponse::validation(
-                __('validation.custom.validation'),
-                $validator->errors()->toArray()
-            )
-        );
-    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -35,19 +18,28 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 'string', 'min:2'
+                'required',
+                'string',
+                'min:2'
             ],
             'email' => [
-                'required', 'email:rfc'
+                'required',
+                'email:rfc,strict',
+                'max:255',
+                'unique:users,email'
             ],
             'phone' => [
-                'required', 'string'
+                'required',
+                'string',
+                'unique:users,phone'
             ],
             'position_id' => [
-                'required', 'integer'
+                'required',
+                'integer'
             ],
             'photo' => [
-                'required', 'max:5120'
+                'required',
+                'max:5120'
             ],
         ];
     }

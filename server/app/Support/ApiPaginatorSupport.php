@@ -9,27 +9,27 @@ class ApiPaginatorSupport
     /**
      * @param array $items
      * @param int $page
-     * @param int $per_page
-     * @param int $total_items
+     * @param int $perPage
+     * @param int $totalItems
      * @return array|array[]
      */
-    public function paginate(array $items, int $page = 1, int $per_page = self::PER_PAGE, int $total_items = 0): array
+    public function paginate(array $items, int $page = 1, int $perPage = self::PER_PAGE, int $totalItems = 0): array
     {
 
-        $per_page = max($per_page, 1);
-        $total_pages = (int)ceil($total_items / $per_page);
-        $current_page = max(min($page, $total_pages), 1);
-        $data = array_slice($items, ($current_page - 1) * $per_page, $per_page);
+        $perPage = max($perPage, 1);
+        $totalPages = (int)ceil($totalItems / $perPage);
+        $currentPage = max(min($page, $totalPages), 1);
+        $data = array_slice($items, ($currentPage - 1) * $perPage, $perPage);
 
         return [
             'data' => $data,
-            'total' => $total_items,
-            'count' => $per_page,
-            'current_page' => $current_page,
-            'total_pages' => $total_pages,
+            'total' => $totalItems,
+            'count' => $perPage,
+            'current_page' => $currentPage,
+            'total_pages' => $totalPages,
             'links' => [
-                'next_url' => $current_page < $total_pages ? $this->generateUrl($current_page + 1) : null,
-                'prev_url' => $current_page > 1 ? $this->generateUrl($current_page - 1) : null,
+                'next_url' => $currentPage < $totalPages ? $this->generateUrl($currentPage + 1) : null,
+                'prev_url' => $currentPage > 1 ? $this->generateUrl($currentPage - 1) : null,
             ],
         ];
     }

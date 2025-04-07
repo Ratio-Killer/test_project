@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\Position;
 
 use App\Contracts\Actions\Position\GetPositionActionContract;
 use App\Facades\ApiResponse;

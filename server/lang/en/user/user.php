@@ -8,6 +8,10 @@ return [
         ],
         '404' => [
             'page_not_found' => 'Page not found',
+            'user_not_found' => 'User not found',
+        ],
+        '409' => [
+            'duplicate' => 'User with this phone or email already exist',
         ],
     ],
 ];

@@ -3,29 +3,11 @@
 namespace App\Http\Requests\Api;
 
 use App\DataTransferObjects\User\GetUsersDTO;
-use App\Facades\ApiResponse;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\BaseApiFormRequest;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
-class GetUsersRequest extends FormRequest
+class GetUsersRequest extends BaseApiFormRequest
 {
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param Validator $validator
-     * @return HttpResponseException
-     */
-    public function failedValidation(Validator $validator): HttpResponseException
-    {
-        throw new HttpResponseException(
-            ApiResponse::validation(
-                __('validation.custom.validation'),
-                $validator->errors()->toArray()
-            )
-        );
-    }
     /**
      * Get the validation rules that apply to the request.
      *

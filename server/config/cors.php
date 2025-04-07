@@ -23,7 +23,7 @@ return [
 
     'allowed_origins_patterns' => [env('CLIENT_URL')],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => [env('CLIENT_URL')],
 
     'exposed_headers' => [],
 
