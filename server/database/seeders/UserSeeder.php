@@ -24,7 +24,7 @@ use ImageTrait;
         $positionIds = Position::pluck('id')->toArray();
         $users = [];
 
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 45; $i++) {
             $gender = rand(0, 1) ? 'men' : 'women';
             $randomId = rand(1, 99);
             $avatarUrl = config('abz_api')['random_image_url'] . "/{$gender}/{$randomId}.jpg";
